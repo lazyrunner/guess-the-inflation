@@ -1,0 +1,15 @@
+services:
+  guess-the-inflation:
+    build: .
+    image: guess-the-inflation:latest
+    container_name: guess-the-inflation
+    restart: unless-stopped
+    ports:
+      - "8080:3000"
+    environment:
+      - TZ=America/Toronto   # the daily puzzle rolls over at midnight in this zone
+    volumes:
+      - game-data:/data
+
+volumes:
+  game-data:

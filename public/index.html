@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guess the Inflation</title>
+  <meta name="description" content="A daily game: guess the grocery product from its price change.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Guess the Inflation</h1>
+    <p class="sub" id="sub">&nbsp;</p>
+  </header>
+
+  <main>
+    <section class="card" id="prices" aria-live="polite">
+      <div class="row">
+        <div class="pt"><span class="mon" id="startMon">—</span><span class="amt" id="startAmt">—</span></div>
+        <div class="arrow" aria-hidden="true">→</div>
+        <div class="pt"><span class="mon" id="endMon">—</span><span class="amt" id="endAmt">—</span></div>
+      </div>
+      <div class="stats">
+        <div><span class="lbl">Change</span><span id="diff">—</span></div>
+        <div><span class="lbl">Rate</span><span id="rate">—</span></div>
+      </div>
+    </section>
+
+    <ol class="slots" id="slots"></ol>
+
+    <form id="form" autocomplete="off">
+      <div class="combo">
+        <input id="guess" type="text" placeholder="Which product is it?" aria-label="Product guess"
+               role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="list">
+        <ul id="list" role="listbox" hidden></ul>
+      </div>
+      <button type="submit" id="submit">Guess</button>
+    </form>
+    <p class="msg" id="msg" role="status"></p>
+
+    <section id="result" hidden>
+      <h2 id="resultTitle"></h2>
+      <p class="answer" id="answer"></p>
+      <figure class="chart">
+        <figcaption id="chartTitle"></figcaption>
+        <div id="chart"></div>
+      </figure>
+      <div class="actions">
+        <button id="share" type="button">Share</button>
+      </div>
+      <p class="next">Next product in <span id="countdown">—</span></p>
+    </section>
+  </main>
+
+  <footer>Data: Statistics Canada, Table 18-10-0245-01 · Monthly average retail prices (Canada)</footer>
+  <script src="app.js"></script>
+</body>
+</html>
