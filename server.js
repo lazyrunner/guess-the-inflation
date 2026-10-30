@@ -119,13 +119,16 @@ function seedHints() {
   for (const p of db.prepare('SELECT id, name FROM products').all()) {
     const h = hints[p.name];
     if (!h) { console.warn(`No hints for "${p.name}"`); continue; }
-    const size = p.name.includes(',') ? p.name.split(',').slice(1).join(',').trim() : p.name.match(/\((.*)\)/)?.[1];
-    const sold = size === 'unit' ? 'each' : size;
-    const texts = [`Aisle: ${h[0]}${sold ? ` · Sold as: ${sold}` : ''}`, h[1]];
+    // No package size in hints: it's unique enough to look the product up in the guess list.
+    const texts = [`Aisle: ${h[0]}`, h[1]];
     texts.forEach((t, i) => { added += Number(ins.run(p.id, i + 1, t).changes); });
   }
+  // Strip the size from hints seeded by older versions.
+  const stripped = db.prepare(`UPDATE hints SET text = substr(text, 1, instr(text, ' · Sold as: ') - 1)
+    WHERE text LIKE 'Aisle: %' AND instr(text, ' · Sold as: ') > 0`).run().changes;
   db.exec('COMMIT');
   if (added) console.log(`Seeded ${added} hints`);
+  if (stripped) console.log(`Removed package size from ${stripped} hints`);
 }
 
 importCsv();
